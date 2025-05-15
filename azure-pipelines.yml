@@ -10,9 +10,16 @@ pool:
   name: dawg
   
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: mvn clean test
+  displayName: 'Build and Run Unit Tests'
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '***/target/surefire-report/TEST-*.xml'
+    testResultsFormat: 'Junit'
+    failTaskOnMissingResultsFile: true
+  displayName: "Publish Maven Test Result"
+   
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
